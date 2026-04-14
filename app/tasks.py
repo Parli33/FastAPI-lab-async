@@ -1,4 +1,5 @@
 import asyncio
+import time
 from app.storage import update_task
 
 async def long_running_task(task_id: str, input_data: dict):
@@ -14,3 +15,8 @@ async def long_running_task(task_id: str, input_data: dict):
         update_task(task_id, "completed", result)
     except Exception as e:
         update_task(task_id, "error", {"error": str(e)})
+
+def sync_cpu_bound(data: dict) -> dict:
+    # Имитация вычислений, занимающих несколько секунд
+    time.sleep(3) # блокирующий вызов
+    return {"computed": data.get("value", 0) * 2}
