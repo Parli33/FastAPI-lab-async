@@ -2,6 +2,14 @@ import asyncio
 import time
 from app.storage import update_task
 
+task_queue = asyncio.Queue()
+
+async def task_worker():
+    while True:
+        task_id, input_data = await task_queue.get()
+        await long_running_task(task_id, input_data)
+        task_queue.task_done()
+
 async def long_running_task(task_id: str, input_data: dict):
     try:
         # Имитация долгой обработки (например, анализ изображения)
